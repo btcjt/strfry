@@ -53,29 +53,26 @@ void RelayServer::runWebsocket(ThreadPool<MsgWebsocket>::Thread &thr)
     {
         if (ver != cfg().version())
         {
-            tao::json::value nip11 = tao::json::value({
-                {"supported_nips", supportedNips},
-                {"software", "https://westernbtc.com"}, // Hardcoded value
-                {"version", "1.0.0"}                          // Hardcoded value
-            });
-
-            // Conditional checks for dynamic values
-            if (cfg().relay__info__name.size())
-                nip11["name"] = cfg().relay__info__name;
-            if (cfg().relay__info__description.size())
-                nip11["description"] = cfg().relay__info__description;
-            if (cfg().relay__info__pubkey.size())
-                nip11["pubkey"] = cfg().relay__info__pubkey;
-            if (cfg().relay__info__contact.size())
-                nip11["contact"] = cfg().relay__info__contact;
-
-            // Hardcoded icon and pay-to-relay information
-            nip11["icon"] = "https://westernbtc.com/logo192.png";
-
-            tao::json::value payToRelay = tao::json::value({{"payments_url", "https://westernbtc.com"},
-                                                            {"fees", tao::json::value({{"admission", tao::json::value({{{"amount", 10000}, {"unit", "sats"}}})}})}});
-
-            nip11["pay_to_relay"] = payToRelay;
+            tao::json::value nip11 = tao::json::value({{"name", "westernbtc-relay"},                                                               // Hardcoded value
+                                                       {"description", "Fast and reliable nostr servers located at an ISP in Corvallis, Oregon."}, // Hardcoded value
+                                                       {"pubkey", "c84dc8350e51bea7339296f075ed3f32cc745eecd090c82c08091ecb872d3672"},             // Hardcoded value or cfg().relay__info__pubkey
+                                                       {"contact", "westernbtc@westernbtc.com"},                                                   // Hardcoded value or cfg().relay__info__contact
+                                                       {"supported_nips", supportedNips},
+                                                       {"software", "https://westernbtc.com"},         // Hardcoded value
+                                                       {"version", "1.0.0"},                           // Hardcoded value
+                                                       {"icon", "https://westernbtc.com/logo192.png"}, // Hardcoded value
+                                                       {"payments_url", "https://westernbtc.com"},     // Hardcoded value
+                                                       {"fees", tao::json::value({{"admission", tao::json::value({{{"amount", 10000}, {"unit", "sats"}}})}})},
+                                                       {"limitation", tao::json::value({{"auth_required", false},
+                                                                                        {"created_at_lower_limit", 94608000},
+                                                                                        {"created_at_upper_limit", 300},
+                                                                                        {"max_event_tags", 2000},
+                                                                                        {"max_limit", 1000},
+                                                                                        {"max_message_length", 131072},
+                                                                                        {"max_subid_length", 71},
+                                                                                        {"max_subscriptions", 50},
+                                                                                        {"min_pow_difficulty", 0},
+                                                                                        {"payment_required", true}})}});
 
             rendered = preGenerateHttpResponse("application/json", tao::json::to_string(nip11));
             ver = cfg().version();
