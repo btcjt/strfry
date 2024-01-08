@@ -55,8 +55,8 @@ void RelayServer::runWebsocket(ThreadPool<MsgWebsocket>::Thread &thr)
         {
             tao::json::value nip11 = tao::json::value({
                 {"supported_nips", supportedNips},
-                {"software", cfg().relay__info__software}, // Static value, assuming it's always set
-                {"version", cfg().relay__info__version}    // Static value, assuming it's always set
+                {"software", "https://westernbtc.com"}, // Hardcoded value
+                {"version", "1.0.0"}                          // Hardcoded value
             });
 
             // Conditional checks for dynamic values
@@ -68,25 +68,14 @@ void RelayServer::runWebsocket(ThreadPool<MsgWebsocket>::Thread &thr)
                 nip11["pubkey"] = cfg().relay__info__pubkey;
             if (cfg().relay__info__contact.size())
                 nip11["contact"] = cfg().relay__info__contact;
-            if (cfg().relay__info__icon.size())
-                nip11["icon"] = cfg().relay__info__icon;
 
-            // Pay-to-relay information conditional check
-            if (cfg().relay__info__payments_url.size() || cfg().relay__info__admission_fee_amount > 0)
-            {
-                tao::json::value payToRelay = tao::json::value({});
-                if (cfg().relay__info__payments_url.size())
-                    payToRelay["payments_url"] = cfg().relay__info__payments_url;
+            // Hardcoded icon and pay-to-relay information
+            nip11["icon"] = "https://westernbtc.com/logo192.png";
 
-                if (cfg().relay__info__admission_fee_amount > 0)
-                {
-                    payToRelay["fees"] = tao::json::value({{"admission", tao::json::value({tao::json::value({{"amount", cfg().relay__info__admission_fee_amount},
-                                                                                                             {"unit", cfg().relay__info__admission_fee_unit}})})}});
-                }
+            tao::json::value payToRelay = tao::json::value({{"payments_url", "https://westernbtc.com"},
+                                                            {"fees", tao::json::value({{"admission", tao::json::value({{{"amount", 10000}, {"unit", "sats"}}})}})}});
 
-                if (!payToRelay.empty())
-                    nip11["pay_to_relay"] = payToRelay;
-            }
+            nip11["pay_to_relay"] = payToRelay;
 
             rendered = preGenerateHttpResponse("application/json", tao::json::to_string(nip11));
             ver = cfg().version();
