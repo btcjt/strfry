@@ -64,14 +64,9 @@ void RelayServer::runWebsocket(ThreadPool<MsgWebsocket>::Thread &thr)
                                                        {"payments_url", "https://westernbtc.com"},     // Hardcoded value
                                                        {"fees", tao::json::value({{"admission", tao::json::value({{{"amount", 10000}, {"unit", "sats"}}})}})},
                                                        {"limitation", tao::json::value({{"auth_required", false},
-                                                                                        {"created_at_lower_limit", 94608000},
-                                                                                        {"created_at_upper_limit", 300},
                                                                                         {"max_event_tags", 2000},
-                                                                                        {"max_limit", 1000},
-                                                                                        {"max_message_length", 131072},
-                                                                                        {"max_subid_length", 71},
-                                                                                        {"max_subscriptions", 50},
-                                                                                        {"min_pow_difficulty", 0},
+                                                                                        {"max_message_length", 65535},
+                                                                                        {"max_subscriptions", 20},
                                                                                         {"payment_required", true}})}});
 
             rendered = preGenerateHttpResponse("application/json", tao::json::to_string(nip11));
