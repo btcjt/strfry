@@ -53,16 +53,16 @@ void RelayServer::runWebsocket(ThreadPool<MsgWebsocket>::Thread &thr)
     {
         if (ver != cfg().version())
         {
-            tao::json::value nip11 = tao::json::value({{"name", "westernbtc-relay"},                                                                                                                                                                                                                          // Hardcoded value
-                                                       {"description", "The Western BTC Relay has a unique feature where it will automatically sync all your data from Damus and Primal upon admittance. The Western BTC Relay is a fast and reliable nostr server located at an ISP in Corvallis, Oregon."}, // Hardcoded value
-                                                       {"pubkey", "0e29efc2a3eb6966403e8c61cb8bea6d78527af5e0565a2baa0f313eff142af2"},                                                                                                                                                                        // Hardcoded value or cfg().relay__info__pubkey
-                                                       {"contact", "josh@westernbtc.com"},                                                                                                                                                                                                                    // Hardcoded value or cfg().relay__info__contact
+            tao::json::value nip11 = tao::json::value({{"name", "westernbtc-relay"},                                                                                                                                                                                                                           // Hardcoded value
+                                                       {"description", "The Western BTC Relay is located at an ISP in Corvallis, Oregon that has two unique features: it will automatically sync all your data from Damus and Primal upon admittance, and we donate 10% of our admittance fees to OpenSats."}, // Hardcoded value
+                                                       {"pubkey", "0e29efc2a3eb6966403e8c61cb8bea6d78527af5e0565a2baa0f313eff142af2"},                                                                                                                                                                         // Hardcoded value or cfg().relay__info__pubkey
+                                                       {"contact", "josh@westernbtc.com"},                                                                                                                                                                                                                     // Hardcoded value or cfg().relay__info__contact
                                                        {"supported_nips", supportedNips},
                                                        {"software", "https://westernbtc.com"},         // Hardcoded value
                                                        {"version", "1.0.0"},                           // Hardcoded value
                                                        {"icon", "https://westernbtc.com/logo192.png"}, // Hardcoded value
                                                        {"payments_url", "https://westernbtc.com"},     // Hardcoded value
-                                                       {"fees", tao::json::value({{"admission", tao::json::value({{{"amount", 10000}, {"unit", "sats"}}})}})},
+                                                       {"fees", tao::json::value({{"admission", tao::json::value({{{"amount", 15000}, {"unit", "sats"}}})}})},
                                                        {"limitation", tao::json::value({{"auth_required", false},
                                                                                         {"max_event_tags", 2000},
                                                                                         {"max_message_length", 65535},
